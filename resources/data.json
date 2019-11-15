@@ -1,12 +1,77 @@
 {
+    "Blog": {
+        "block 1": {
+            "Button_Text": "read more >",
+            "text": "lorem ipsum dolor sit amet"
+        },
+        "block 2": {
+            "Button_Text": "read more >",
+            "text": "lorem ipsum dolor sit ame lorem ipsum dolor sit amet"
+        },
+        "block 3": {
+            "Button_Text": "read more >",
+            "text": "lorem ipsum dolor sit ame lorem ipsum."
+        }
+    },
     "Browse_Gifts": {
-        "Title": "BROWSE GIFTS FOR:"
+        "Title": "browse gifts for:",
+        "block 1": {
+            "Button_Text": "him >"
+        },
+        "block 2": {
+            "Button_Text": "pets >"
+        },
+        "block 3": {
+            "Button_Text": "girls >"
+        },
+        "block 4": {
+            "Button_Text": "babies >"
+        }
+    },
+    "Gifts_Under": {
+        "block 1": {
+            "Button_Text": "fern pendant<br>£39.00"
+        },
+        "block 2": {
+            "Button_Text": "personalised denim shopper<br>£40.00"
+        },
+        "block 3": {
+            "Button_Text": "trio of candles<br>£30.00"
+        },
+        "block 4": {
+            "Button_Text": "sleep well box<br>£28.00"
+        },
+        "cta": "shop all >",
+        "title": "gifts for £40 and under"
     },
     "Hero": {
-        "Headline": "FROM STOCKING FILLERS TO BIG SURPRISES",
-        "cta": "SHOP GIFTS FOR HER >"
+        "Headline": "from stocking fillers to big surprises",
+        "cta": "shop gifts for her >"
+    },
+    "Inspiration": {
+        "block 1": {
+            "Button_Text": "dogs >"
+        },
+        "block 2": {
+            "Button_Text": "party >"
+        },
+        "block 3": {
+            "Button_Text": "cooking up a storm >"
+        },
+        "block 4": {
+            "Button_Text": "great outdoors >"
+        },
+        "title": "browse by inspiration"
+    },
+    "Popular_Categories": {
+        "Left": {
+            "Button_Text": "tops >"
+        },
+        "Right": {
+            "Button_Text": "scarves >"
+        }
     },
     "Title": {
-        "Heading": "Sackfuls of gift ideas for the whole family."
+        "Heading": "sackfuls of gift ideas for the whole family."
     }
 }
