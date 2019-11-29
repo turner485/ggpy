@@ -1,0 +1,100 @@
+//Core partials
+@import "master";
+#gift-guide-container {
+	#hero-row {
+		margin-top: 40px;
+		@include max(767) {
+			margin-top: get-vw-screen(40px, 767);
+		}
+		#hero-col {
+			position: relative;
+			@include max(767) {
+				padding: 0;
+				height: auto;
+			}
+			.background-container {
+				display: -ms-inline-grid;
+				display: inline-grid;
+				-ms-grid-rows: 1fr;
+				-ms-grid-columns: 1fr 10px 1fr 10px 1fr;
+				grid-template-columns: 1fr 10px 1fr 10px 1fr;
+				height: 650px;
+				width: 100%;
+				justify-content: center;
+				@include max(991) {
+					-ms-grid-columns: 1fr 10px 1fr;
+					grid-template-columns: 1fr 10px 1fr;
+				}
+			}
+			.background-A {
+				background-image: url("/medias/-hero-01-v1.jpg?context=bWFzdGVyfGltYWdlc3w2NTEwOHxpbWFnZS9qcGVnfHN5cy1tYXN0ZXIvaW1hZ2VzL2g3NS9oZTAvOTUyMDEzMzU3MDU5MC9faGVyb18wMV92MS5qcGd8ZGQ3OWE0MGMwOGU2NTg4MDViMjhlNDRkZjI0NjliYzhiYWZjMjI5MTIwMTBjYmIzMDBjYTNiYjUxNTM5MDU5MA");
+				background-repeat: no-repeat;
+				background-position: 50% 50%;
+				-ms-grid-row: 1;
+				grid-row: 1;
+				-ms-grid-column: 1;
+				grid-column: 1;
+			}
+			.background-B {
+				background-image: url("/medias/-hero-02-v1.jpg?context=bWFzdGVyfGltYWdlc3w2NzEzOHxpbWFnZS9qcGVnfHN5cy1tYXN0ZXIvaW1hZ2VzL2hjZS9oZGQvOTUyMDEzMzYwMzM1OC9faGVyb18wMl92MS5qcGd8YjVlZDRhY2FjNjM2YTVjMzE2YTc4YzQ2ODk4Njk0MzA2YTY2N2JjMTMyOTM5ZmNhNzllOTNkZWFhODRmMjk0OQ");
+				background-repeat: no-repeat;
+				background-position: 30% 50%;
+				max-width: 786px;
+				-ms-grid-row: 1;
+				grid-row: 1;
+				-ms-grid-column: 3;
+				grid-column: 3;
+			}
+			.background-C {
+				background-image: url("/medias/-hero-03-v1.jpg?context=bWFzdGVyfGltYWdlc3w2ODM1OHxpbWFnZS9qcGVnfHN5cy1tYXN0ZXIvaW1hZ2VzL2g3Ny9oZGQvOTUyMDEzMzYzNjEyNi9faGVyb18wM192MS5qcGd8OWY1YTU3MDhiMjE4N2NhNDhlYzQxOWRjMmMwMTdkODg0NjI5MDllMmYyZGY0MmUwNjVhMjAwMDUzMjA4MjEzNw");
+				background-repeat: no-repeat;
+				background-position: 50% 50%;
+				max-width: 786px;
+				-ms-grid-row: 1;
+				grid-row: 1;
+				-ms-grid-column: 5;
+				grid-column: 5;
+			}
+			.text-container {
+				text-align: center;
+				position: absolute;
+				transform: translate(-50%, 0%);
+				left: 50%;
+				bottom: 10%;
+				@include minmax(768, 991) {
+					left: 74.5%;
+				}
+				@include max(767) {
+					left: 50%;
+					bottom: 10%;
+					width: 100%;
+				}
+				h2 {
+					font-weight: 600;
+				}
+				h2 {
+					@include display-text($fut, 36px, 1.2, 0.08em, #fff, null, null);
+					text-shadow: 1px 1px 10px rgba(0, 0, 0, 0.8);
+					margin: 0 auto;
+					white-space: nowrap;
+					@include minmax(992, 1450) {
+						font-size: get-vw-screen(36px, 1450);
+					}
+					@include minmax(768, 991) {
+						font-size: get-vw-screen(36px, 991);
+					}
+					@include max(767) {
+						font-size: get-vw-screen(56px, 767);
+					}
+				}
+				span {
+					@include button(#000, #fff);
+					margin: 15px auto 0;
+					@include max(767) {
+						margin: get-vw-screen(15px, 767) auto 0;
+					}
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,30 @@
+$lang=en;
+$catalog=newContentCatalog_gb-Staging;
+$version=1;
+$catalogVersion=catalogVersion(catalog(id[default=$catalog]), version[default=$version])[unique=true];
+$contentCV=catalogVersion(catalog(id[default=newContentCatalog_gb-Staging]), version[default=$version])[unique=true];
+$productCV=catalogVersion(catalog(id[default=joulesProductCatalog-Staging]), version[default=$version])[unique=true];
+$picture=media(code, $catalogVersion);
+$siteResource=jar:uk.co.eclipsegroup.joules.initialdata.constants.JoulesInitialDataConstants&/joulesinitialdata/import/contentCatalogs/joulesContentCatalog;
+$media=@media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator];
+INSERT Media;code[unique=true];$media;mime[default='image/jpg'];$catalogVersion;folder(qualifier);realfilename
+;blog_01_v1.jpg;images/blog_01_v1.jpg;;;images;blog_01_v1.jpg
+;blog_02_v1.jpg;images/blog_02_v1.jpg;;;images;blog_02_v1.jpg
+;blog_03_v1.jpg;images/blog_03_v1.jpg;;;images;blog_03_v1.jpg
+;browse-gifts_01_v1.jpg;images/browse-gifts_01_v1.jpg;;;images;browse-gifts_01_v1.jpg
+;browse-gifts_02_v1.jpg;images/browse-gifts_02_v1.jpg;;;images;browse-gifts_02_v1.jpg
+;browse-gifts_03_v1.jpg;images/browse-gifts_03_v1.jpg;;;images;browse-gifts_03_v1.jpg
+;browse-gifts_04_v1.jpg;images/browse-gifts_04_v1.jpg;;;images;browse-gifts_04_v1.jpg
+;gifts-under_01_v1.jpg;images/gifts-under_01_v1.jpg;;;images;gifts-under_01_v1.jpg
+;gifts-under_02_v1.jpg;images/gifts-under_02_v1.jpg;;;images;gifts-under_02_v1.jpg
+;gifts-under_03_v1.jpg;images/gifts-under_03_v1.jpg;;;images;gifts-under_03_v1.jpg
+;gifts-under_04_v1.jpg;images/gifts-under_04_v1.jpg;;;images;gifts-under_04_v1.jpg
+;inspiration_01_v1.jpg;images/inspiration_01_v1.jpg;;;images;inspiration_01_v1.jpg
+;inspiration_02_v1.jpg;images/inspiration_02_v1.jpg;;;images;inspiration_02_v1.jpg
+;inspiration_03_v1.jpg;images/inspiration_03_v1.jpg;;;images;inspiration_03_v1.jpg
+;inspiration_04_v1.jpg;images/inspiration_04_v1.jpg;;;images;inspiration_04_v1.jpg
+;popular-categories_left_v1.jpg;images/popular-categories_left_v1.jpg;;;images;popular-categories_left_v1.jpg
+;popular-categories_right_v1.jpg;images/popular-categories_right_v1.jpg;;;images;popular-categories_right_v1.jpg
+;_hero_01_v1.jpg;images/_hero_01_v1.jpg;;;images;_hero_01_v1.jpg
+;_hero_02_v1.jpg;images/_hero_02_v1.jpg;;;images;_hero_02_v1.jpg
+;_hero_03_v1.jpg;images/_hero_03_v1.jpg;;;images;_hero_03_v1.jpg
