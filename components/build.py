@@ -2,16 +2,18 @@
 import json
 from pathlib import Path
 import os
-### create vars
-_path = 'C://Users//Ben.Turner//Documents//code//python//ggpy//'
-os.makedirs(Path(_path).joinpath('production'), exist_ok=True)
-html_template = _path + 'templates//template.html'
-scss_template = _path + 'templates//template.scss'
-html_blocks = _path + 'templates//html//block.html'
-html_production = _path + 'production//index.html'
-scss_production = _path + 'production//UK.scss'
+#
+path = Path.cwd()
+absolute_path_ = (str(path))
+absolute_path_ = absolute_path_
+os.makedirs(Path(absolute_path_).joinpath('production'), exist_ok=True)
+html_template = absolute_path_ + '//templates//template.html'
+scss_template = absolute_path_ + '//templates//template.scss'
+html_blocks = absolute_path_ + '//templates//html//blocks//block.html'
+html_blog_blocks = absolute_path_ + '//templates//html//blocks//blog_block.html'
+html_production = absolute_path_ + '//production//index.html'
+scss_production = absolute_path_ + '//production//UK.scss'
 ###
-# create function that gets json globally 
 def get_json_data():
     try:
         with open('resources/data.json') as json_file:
@@ -20,7 +22,6 @@ def get_json_data():
     except:
         return None
 ###
-# create function that gets html globally 
 def get_html():
     with open(html_template, 'r') as file:
         file_data = file.read()
@@ -30,7 +31,10 @@ def get_blocks():
     with open(html_blocks, 'r') as file:
         block_data = file.read()
     return block_data
-# try get function 2 parameters 
+def get_blog_blocks():
+    with open(html_blog_blocks, 'r') as file:
+        blog_block_data = file.read()
+    return blog_block_data
 def try_get_data(data, a, b):
     try:
         return data[a][b]
@@ -49,9 +53,9 @@ def main(data, html):
     file_data = html_hero_content(data, html)
     file_data = html_browse_gifts_content(data, file_data, block_data)
     file_data = html_popular_categories_content(data, file_data)
-    file_data = html_gifts_under_content(data, file_data)
-    file_data = html_inspiration_content(data, file_data)
-    file_data = html_blog_content(data, file_data)
+    file_data = html_gifts_under_content(data, file_data, block_data)
+    file_data = html_inspiration_content(data, file_data, block_data)
+    file_data = html_blog_content(data, file_data, blog_block_data)
     #build html
     with open(html_production, 'w') as file:
         file.write(file_data)
@@ -90,35 +94,36 @@ def scss_hero_content(data):
 def html_browse_gifts_content(data, html, block_data):
     #pass html through parameter 
     count = try_get_data(data, 'Browse_Gifts', 'count')
-    file_data = html
-    asd = ''
+    with open(absolute_path_ + '//templates//html//carousels//browse_carousel.html') as file:
+        file_data = file.read()
+    carousel_pop_data = ''
+
+    Headline = try_get_data(data, 'Browse_Gifts', 'Headline')
+    file_data = file_data.replace('[Browse_Gifts_Headline]', Headline)
+    
     for i in range(count):
         i+=1
-        block_data = block_data.replace(f'[Browse_Gifts_Block_{i-1}_Text]', f'[Browse_Gifts_Block_{i}_Text]')
-        block_data = block_data.replace(f'[Browse_Gifts_Block_{i-1}_Link]', f'[Browse_Gifts_Block_{i}_Link]')
-        block_data = block_data.replace(f'[Browse_Gifts_Block_{i-1}_Image_Source]', f'[Browse_Gifts_Block_{i}_Image_Source]')
+        block_data = block_data.replace(f'[Carousel_Block_{i-1}_Text]', f'[Carousel_Block_{i}_Text]')
+        block_data = block_data.replace(f'[Carousel_Block_{i-1}_Link]', f'[Carousel_Block_{i}_Link]')
+        block_data = block_data.replace(f'[Carousel_Block_{i-1}_Image_Source]', f'[Carousel_Block_{i}_Image_Source]')
 
-        browse_gifts_carousel = block_data
+        carousel_empty_data = block_data
 
         blockButtonText = try_get_row_data(data, 'Browse_Gifts', f'block {i}', 'Button_Text')    
         blockButtonLink = try_get_row_data(data, 'Browse_Gifts', f'block {i}', 'Link')    
         blockButtonImgSrc = try_get_row_data(data, 'Browse_Gifts', f'block {i}', 'ImageSrc')    
-        browse_gifts_carousel = browse_gifts_carousel.replace(f'[Browse_Gifts_Block_{i}_Text]', blockButtonText)
-        browse_gifts_carousel = browse_gifts_carousel.replace(f'[Browse_Gifts_Block_{i}_Link]', blockButtonLink)
-        browse_gifts_carousel = browse_gifts_carousel.replace(f'[Browse_Gifts_Block_{i}_Image_Source]', blockButtonImgSrc)
-        asd += browse_gifts_carousel
-        # print(browse_gifts_carousel)
-    
-        # # get json data
-        # Headline = try_get_data(data, 'Browse_Gifts', 'Headline')
-        # #replace data
-        # file_data = file_data.replace('[Browse_Gifts_Headline]', Headline)
-        # # return data
-    return asd    
+        carousel_empty_data = carousel_empty_data.replace(f'[Carousel_Block_{i}_Text]', blockButtonText)
+        carousel_empty_data = carousel_empty_data.replace(f'[Carousel_Block_{i}_Link]', blockButtonLink)
+        carousel_empty_data = carousel_empty_data.replace(f'[Carousel_Block_{i}_Image_Source]', blockButtonImgSrc)
+        carousel_pop_data += carousel_empty_data
+
+    file_data = file_data.replace('[Browse_Gifts_Carousel_Row]', carousel_pop_data)
+    html = html.replace('[Browse_Gifts_Block]', file_data)
+    return html
     
 ###
-def a(carousel_a):
-    print(carousel_a)
+
+   
 def html_popular_categories_content(data, html):
     #pass html through parameter 
     file_data = html
@@ -139,110 +144,107 @@ def html_popular_categories_content(data, html):
     #return data
     return file_data
 ###
-def html_gifts_under_content(data, html):
-    #pass html 
-    file_data = html
-    #get json data
+def html_gifts_under_content(data, html, block_data):
+    count = try_get_data(data, 'Gifts_Under', 'count')
+    with open(absolute_path_ + '//templates//html//carousels//gifts_under_carousel.html') as file:
+        file_data = file.read()
+    carousel_pop_data = ''
+
     Headline = try_get_data(data, 'Gifts_Under', 'Headline')
     ButtonText = try_get_data(data, 'Gifts_Under', 'Button_Text')
     ButtonLink = try_get_data(data, 'Gifts_Under', 'Link')
-    blockOneButtonText = try_get_row_data(data, 'Gifts_Under', 'block 1', 'Button_Text')
-    blockTwoButtonText = try_get_row_data(data, 'Gifts_Under', 'block 2', 'Button_Text')
-    blockThreeButtonText = try_get_row_data(data, 'Gifts_Under', 'block 3', 'Button_Text')
-    blockFourButtonText = try_get_row_data(data, 'Gifts_Under', 'block 4', 'Button_Text')
-    blockOneImgSrc = try_get_row_data(data, 'Gifts_Under', 'block 1', 'ImageSrc')
-    blockTwoImgSrc = try_get_row_data(data, 'Gifts_Under', 'block 2', 'ImageSrc')
-    blockThreeImgSrc = try_get_row_data(data, 'Gifts_Under', 'block 3', 'ImageSrc')
-    blockFourImgSrc = try_get_row_data(data, 'Gifts_Under', 'block 4', 'ImageSrc')
-    BlockOneLink = try_get_row_data(data, 'Gifts_Under', 'block 1', 'Link')
-    BlockTwoLink = try_get_row_data(data, 'Gifts_Under', 'block 2', 'Link')
-    BlockThreeLink = try_get_row_data(data, 'Gifts_Under', 'block 3', 'Link')
-    BlockFourLink = try_get_row_data(data, 'Gifts_Under', 'block 4', 'Link')
+    
     #replace data
     file_data = file_data.replace('[Gifts_Under_Headline]', Headline)
     file_data = file_data.replace('[Gifts_Under_Button_Text]', ButtonText)
     file_data = file_data.replace('[Gifts_Under_Button_Link]', ButtonLink)
-    file_data = file_data.replace('[Gifts_Under_Block_1_Text]', blockOneButtonText)
-    file_data = file_data.replace('[Gifts_Under_Block_2_Text]', blockTwoButtonText)
-    file_data = file_data.replace('[Gifts_Under_Block_3_Text]', blockThreeButtonText)
-    file_data = file_data.replace('[Gifts_Under_Block_4_Text]', blockFourButtonText)
-    file_data = file_data.replace('[Gifts_Under_Block_1_Image_Source]', blockOneImgSrc)
-    file_data = file_data.replace('[Gifts_Under_Block_2_Image_Source]', blockTwoImgSrc)
-    file_data = file_data.replace('[Gifts_Under_Block_3_Image_Source]', blockThreeImgSrc)
-    file_data = file_data.replace('[Gifts_Under_Block_4_Image_Source]', blockFourImgSrc)
-    file_data = file_data.replace('[Gifts_Under_Block_1_Link]', BlockOneLink)
-    file_data = file_data.replace('[Gifts_Under_Block_2_Link]', BlockTwoLink)
-    file_data = file_data.replace('[Gifts_Under_Block_3_Link]', BlockThreeLink)
-    file_data = file_data.replace('[Gifts_Under_Block_4_Link]', BlockFourLink)
+    
+    for i in range(count):
+        i+=1
+        block_data = block_data.replace(f'[Carousel_Block_{i-1}_Text]', f'[Carousel_Block_{i}_Text]')
+        block_data = block_data.replace(f'[Carousel_Block_{i-1}_Link]', f'[Carousel_Block_{i}_Link]')
+        block_data = block_data.replace(f'[Carousel_Block_{i-1}_Image_Source]', f'[Carousel_Block_{i}_Image_Source]')
+
+        carousel_empty_data = block_data
+
+        blockButtonText = try_get_row_data(data, 'Gifts_Under', f'block {i}', 'Button_Text')    
+        blockButtonLink = try_get_row_data(data, 'Gifts_Under', f'block {i}', 'Link')    
+        blockButtonImgSrc = try_get_row_data(data, 'Gifts_Under', f'block {i}', 'ImageSrc')    
+        carousel_empty_data = carousel_empty_data.replace(f'[Carousel_Block_{i}_Text]', blockButtonText)
+        carousel_empty_data = carousel_empty_data.replace(f'[Carousel_Block_{i}_Link]', blockButtonLink)
+        carousel_empty_data = carousel_empty_data.replace(f'[Carousel_Block_{i}_Image_Source]', blockButtonImgSrc)
+        carousel_pop_data += carousel_empty_data
+
+    file_data = file_data.replace('[Gifts_Under_Carousel_Row]', carousel_pop_data)
+    html = html.replace('[Gifts_Under_Block]', file_data)
+
     # return data
-    return file_data
+    return html
 ###
-def html_inspiration_content(data, html):
-        file_data = html
-        # get json data
-        Headline = try_get_data(data, 'Inspiration', 'Headline')
-        blockOneButtonText = try_get_row_data(data, 'Inspiration', 'block 1', 'Button_Text')
-        blockTwoButtonText = try_get_row_data(data, 'Inspiration', 'block 2', 'Button_Text')
-        blockThreeButtonText = try_get_row_data(data, 'Inspiration', 'block 3', 'Button_Text')
-        blockFourButtonText = try_get_row_data(data, 'Inspiration', 'block 4', 'Button_Text')
-        blockOneImgSrc = try_get_row_data(data, 'Inspiration', 'block 1', 'ImageSrc')
-        blockTwoImgSrc = try_get_row_data(data, 'Inspiration', 'block 2', 'ImageSrc')
-        blockThreeImgSrc = try_get_row_data(data, 'Inspiration', 'block 3', 'ImageSrc')
-        blockFourImgSrc = try_get_row_data(data, 'Inspiration', 'block 4', 'ImageSrc')
-        BlockOneLink = try_get_row_data(data, 'Inspiration', 'block 1', 'Link')
-        BlockTwoLink = try_get_row_data(data, 'Inspiration', 'block 2', 'Link')
-        BlockThreeLink = try_get_row_data(data, 'Inspiration', 'block 3', 'Link')
-        BlockFourLink = try_get_row_data(data, 'Inspiration', 'block 4', 'Link')
-        # replace data
-        file_data = file_data.replace('[Inspiration_Headline]', Headline)
-        file_data = file_data.replace('[Inspiration_Block_1_Text]', blockOneButtonText)
-        file_data = file_data.replace('[Inspiration_Block_2_Text]', blockTwoButtonText)
-        file_data = file_data.replace('[Inspiration_Block_3_Text]', blockThreeButtonText)
-        file_data = file_data.replace('[Inspiration_Block_4_Text]', blockFourButtonText)
-        file_data = file_data.replace('[Inspiration_Block_1_Image_Source]', blockOneImgSrc)
-        file_data = file_data.replace('[Inspiration_Block_2_Image_Source]', blockTwoImgSrc)
-        file_data = file_data.replace('[Inspiration_Block_3_Image_Source]', blockThreeImgSrc)
-        file_data = file_data.replace('[Inspiration_Block_4_Image_Source]', blockFourImgSrc)
-        file_data = file_data.replace('[Inspiration_Block_1_Link]', BlockOneLink)
-        file_data = file_data.replace('[Inspiration_Block_2_Link]', BlockTwoLink)
-        file_data = file_data.replace('[Inspiration_Block_3_Link]', BlockThreeLink)
-        file_data = file_data.replace('[Inspiration_Block_4_Link]', BlockFourLink)
-        # return data
-        return file_data
+def html_inspiration_content(data, html, block_data):
+    #pass html through parameter 
+    count = try_get_data(data, 'Inspiration', 'count')
+    with open(absolute_path_ + '//templates//html//carousels//inspiration_carousel.html') as file:
+        file_data = file.read()
+    carousel_pop_data = ''
+
+    Headline = try_get_data(data, 'Inspiration', 'Headline')
+    file_data = file_data.replace('[Inspiration_Headline]', Headline)
+    
+    for i in range(count):
+        i+=1
+        block_data = block_data.replace(f'[Carousel_Block_{i-1}_Text]', f'[Carousel_Block_{i}_Text]')
+        block_data = block_data.replace(f'[Carousel_Block_{i-1}_Link]', f'[Carousel_Block_{i}_Link]')
+        block_data = block_data.replace(f'[Carousel_Block_{i-1}_Image_Source]', f'[Carousel_Block_{i}_Image_Source]')
+
+        carousel_empty_data = block_data
+
+        blockButtonText = try_get_row_data(data, 'Inspiration', f'block {i}', 'Button_Text')    
+        blockButtonLink = try_get_row_data(data, 'Inspiration', f'block {i}', 'Link')    
+        blockButtonImgSrc = try_get_row_data(data, 'Inspiration', f'block {i}', 'ImageSrc')    
+        carousel_empty_data = carousel_empty_data.replace(f'[Carousel_Block_{i}_Text]', blockButtonText)
+        carousel_empty_data = carousel_empty_data.replace(f'[Carousel_Block_{i}_Link]', blockButtonLink)
+        carousel_empty_data = carousel_empty_data.replace(f'[Carousel_Block_{i}_Image_Source]', blockButtonImgSrc)
+        carousel_pop_data += carousel_empty_data
+
+    file_data = file_data.replace('[Inspiration_Carousel_Row]', carousel_pop_data)
+    html = html.replace('[Inspiration_Block]', file_data)
+    return html
 ###
-def html_blog_content(data, html):
-        # pass html
-        file_data = html
-        # get json data
-        Headline = try_get_data(data, 'Blog', 'Headline')
-        blockOneButtonText = try_get_row_data(data, 'Blog', 'block 1', 'Text')
-        blockTwoButtonText = try_get_row_data(data, 'Blog', 'block 2', 'Text')
-        blockThreeButtonText = try_get_row_data(data, 'Blog', 'block 3', 'Text')
-        blockOneImgSrc = try_get_row_data(data, 'Blog', 'block 1', 'ImageSrc')
-        blockTwoImgSrc = try_get_row_data(data, 'Blog', 'block 2', 'ImageSrc')
-        blockThreeImgSrc = try_get_row_data(data, 'Blog', 'block 3', 'ImageSrc')
-        BlockOneLink = try_get_row_data(data, 'Blog', 'block 1', 'Link')
-        BlockTwoLink = try_get_row_data(data, 'Blog', 'block 2', 'Link')
-        BlockThreeLink = try_get_row_data(data, 'Blog', 'block 3', 'Link')
-        # replace data
-        file_data = file_data.replace('[Blog_Headline]', Headline)
-        file_data = file_data.replace('[Blog_Block_1_Text]', blockOneButtonText)
-        file_data = file_data.replace('[Blog_Block_2_Text]', blockTwoButtonText)
-        file_data = file_data.replace('[Blog_Block_3_Text]', blockThreeButtonText)
-        file_data = file_data.replace('[Blog_Block_1_Image_Source]', blockOneImgSrc)
-        file_data = file_data.replace('[Blog_Block_2_Image_Source]', blockTwoImgSrc)
-        file_data = file_data.replace('[Blog_Block_3_Image_Source]', blockThreeImgSrc)
-        file_data = file_data.replace('[Blog_Block_1_Link]', BlockOneLink)
-        file_data = file_data.replace('[Blog_Block_2_Link]', BlockTwoLink)
-        file_data = file_data.replace('[Blog_Block_3_Link]', BlockThreeLink)
-        # return data
-        return file_data
+def html_blog_content(data, html, blog_block_data):
+     #pass html through parameter 
+    count = try_get_data(data, 'Blog', 'count')
+    with open(absolute_path_ + '//templates//html//carousels//blog_row.html') as file:
+        file_data = file.read()
+    carousel_pop_data = ''
+
+    Headline = try_get_data(data, 'Blog', 'Headline')
+    file_data = file_data.replace('[Blog_Headline]', Headline)
+    
+    for i in range(count):
+        i+=1
+        blog_block_data = blog_block_data.replace(f'[Carousel_Block_{i-1}_Text]', f'[Carousel_Block_{i}_Text]')
+        blog_block_data = blog_block_data.replace(f'[Carousel_Block_{i-1}_Link]', f'[Carousel_Block_{i}_Link]')
+        blog_block_data = blog_block_data.replace(f'[Carousel_Block_{i-1}_Image_Source]', f'[Carousel_Block_{i}_Image_Source]')
+
+        carousel_empty_data = blog_block_data
+
+        blockButtonText = try_get_row_data(data, 'Blog', f'block {i}', 'text')    
+        blockButtonLink = try_get_row_data(data, 'Blog', f'block {i}', 'Link')    
+        blockButtonImgSrc = try_get_row_data(data, 'Blog', f'block {i}', 'ImageSrc')    
+        carousel_empty_data = carousel_empty_data.replace(f'[Carousel_Block_{i}_Text]', blockButtonText)
+        carousel_empty_data = carousel_empty_data.replace(f'[Carousel_Block_{i}_Link]', blockButtonLink)
+        carousel_empty_data = carousel_empty_data.replace(f'[Carousel_Block_{i}_Image_Source]', blockButtonImgSrc)
+        carousel_pop_data += carousel_empty_data
+
+    file_data = file_data.replace('[Blog_Carousel_Row]', carousel_pop_data)
+    html = html.replace('[Blog_Block]', file_data)
+    return html
 ### Run functions 
 if __name__ == "__main__":
     data = get_json_data()
     html = get_html()
     block_data = get_blocks()
-    carousel_a = html_browse_gifts_content(data, html, block_data)
+    blog_block_data = get_blog_blocks()
     main(data, html)
     scss_hero_content(data)
-    a(carousel_a)
