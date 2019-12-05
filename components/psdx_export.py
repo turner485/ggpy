@@ -13,6 +13,9 @@ psd_file = 'test.psd'
 psd_file_path = psd_path + psd_file
 psd = PSDImage.open(psd_file_path)
 os.makedirs(Path(psd_path).joinpath('./images/'), exist_ok=True)
+
+image_namespace = input('naming convention:')
+
 desktopArtboard = None
 ###
 for i in psd:
@@ -36,7 +39,7 @@ def get_hero_images(artboard):
                     counter.append(images)
                     image = images.compose()
                     image.convert('RGB').save(
-                    Path(psd_path).joinpath('images', f'_{hero_namespace}_0{str(len(counter))}_v1.jpg'), quality=85)
+                    Path(psd_path).joinpath('images', f'{image_namespace}_{hero_namespace}_0{str(len(counter))}_v1.jpg'), quality=85)
                     print(f'exporting hero image {str(len(counter))}...')
                 if images.kind == 'group' and "Copy".lower() in images.name.lower():
                     for copy in reversed(list(images)):
@@ -53,24 +56,27 @@ def get_browse_gifts_data(artboard):
             for title in reversed(layer):
                 if title.kind == "type" and title.visible:
                     outputDictionary['Browse_Gifts']['Headline'] = title.name.lower().strip()
-            for images in reversed(list(layer.descendants())):
-                if images.kind == 'group' and "Image".lower() in images.name.lower():
-                    try:
-                        counter.append(layer)
-                        image = images.compose()
-                        image.convert('RGB').save(
-                        Path(psd_path).joinpath('images', f'{browse_namespace}_0{str(len(counter))}_v1.jpg'), quality=85)
-                        print(f'exporting browse gift image {str(len(counter))}...')  
-                    except AttributeError:
-                        pass
             for copy in reversed(layer):
-                if 'block' in copy.name.lower() and copy.visible:
+                if 'block' in copy.name.lower() and copy:
                     for cta in copy:
                         if cta.kind == 'type':
                             count += 1
                             block = 'block '.lower() + str(count)
                             outputDictionary['Browse_Gifts'][block] = {}
                             outputDictionary['Browse_Gifts'][block]['Button_Text'] = cta.text.lower().replace(' >', '').strip()
+                    outputDictionary['Browse_Gifts']['count'] = count
+            for images in reversed(list(layer.descendants())):
+                if images.kind == 'group' and "Image".lower() in images.name.lower():
+                    for smart_obj in images:
+                        if smart_obj.kind == "smartobject":         
+                            try:
+                                counter.append(layer)
+                                image = smart_obj.compose()
+                                image.convert('RGB').save(
+                                Path(psd_path).joinpath('images', f'{image_namespace}_{browse_namespace}_0{str(len(counter))}_v1.jpg'), quality=85)
+                                print(f'exporting browse gift image {str(len(counter))}...')  
+                            except AttributeError:
+                                pass
 ###                     
 def get_popular_cats_images(artboard):
     popular_namespace = "popular-categories"
@@ -84,7 +90,7 @@ def get_popular_cats_images(artboard):
                         if left_block.kind =='group' and "Image".lower() in left_block.name.lower():
                             image = left_block.compose()
                             image.convert('RGB').save(
-                            Path(psd_path).joinpath('images', f'{popular_namespace}_left_v1.jpg'), quality=85)
+                            Path(psd_path).joinpath('images', f'{image_namespace}_{popular_namespace}_left_v1.jpg'), quality=85)
                             print('exporting popular categories left image...')
                         if left_block.kind =='type':
                             outputDictionary['Popular_Categories']['Left']['Button_Text'] = left_block.text.lower().replace(' >', '').strip()
@@ -93,7 +99,7 @@ def get_popular_cats_images(artboard):
                         if right_block.kind =='group' and "Image".lower() in right_block.name.lower():
                             image = right_block.compose()
                             image.convert('RGB').save(
-                            Path(psd_path).joinpath('images', f'{popular_namespace}_right_v1.jpg'), quality=85)
+                            Path(psd_path).joinpath('images', f'{image_namespace}_{popular_namespace}_right_v1.jpg'), quality=85)
                             print('exporting popular categories right image...')  
                         if right_block.kind =='type':
                             outputDictionary['Popular_Categories']['Right']['Button_Text'] = right_block.text.lower().replace(' >', '').strip()
@@ -112,22 +118,26 @@ def get_gifts_under_data(artboard):
                         if title.kind == 'group' and title.visible:
                             for cta in title:
                                 if cta.kind == 'type':
-                                    outputDictionary['Gifts_Under']['Button_Text'] = cta.text.lower().replace(' >', '').strip()
+                                    outputDictionary['Gifts_Under']['Button_Text'] = cta.text.lower().replace(' >', '').strip()                
             for copy in layer:
-                if 'block' in copy.name.lower() and copy.visible:
+                if 'block' in copy.name.lower() and copy.kind == 'group':
                     for cta in copy:
                         if cta.kind == 'type':
                             count += 1
                             block = 'block '.lower() + str(count)
                             outputDictionary['Gifts_Under'][block] = {}
-                            outputDictionary['Gifts_Under'][block]['Button_Text'] = cta.text.lower().replace('\r', '<br>').strip()
+                            block_text = outputDictionary['Gifts_Under'][block]['Button_Text'] = cta.text.lower().replace('\r', '<br>').strip()
+                            block_text =  outputDictionary['Gifts_Under'][block]['Button_Text'] = block_text.replace('£', '&pound')
+                    outputDictionary['Gifts_Under']['count'] = count
             for images in reversed(list(layer.descendants())):
                 if images.kind == 'group' and "Image".lower() in images.name.lower():
-                    counter.append(layer)
-                    image = images.compose()
-                    image.convert('RGB').save(
-                    Path(psd_path).joinpath('images', f'{browse_namespace}_0{str(len(counter))}_v1.jpg'), quality=85)
-                    print(f'exporting gift for under £40 image {str(len(counter))}...')  
+                    for smart_obj in images:
+                        if smart_obj.kind == "smartobject": 
+                            counter.append(layer)
+                            image = images.compose()
+                            image.convert('RGB').save(
+                            Path(psd_path).joinpath('images', f'{image_namespace}_{browse_namespace}_0{str(len(counter))}_v1.jpg'), quality=85)
+                            print(f'exporting gift for under £40 image {str(len(counter))}...')  
 ###                                   
 def get_inspiration_data(artboard):
     browse_namespace = "inspiration"
@@ -148,13 +158,16 @@ def get_inspiration_data(artboard):
                             block = 'block '.lower() + str(count)
                             outputDictionary['Inspiration'][block] = {}
                             outputDictionary['Inspiration'][block]['Button_Text'] = cta.text.lower().replace(' >', '').strip()
+                    outputDictionary['Inspiration']['count'] = count
             for images in reversed(list(layer.descendants())):
                 if images.kind == 'group' and "Image".lower() in images.name.lower():
-                    counter.append(layer)
-                    image = images.compose()
-                    image.convert('RGB').save(
-                    Path(psd_path).joinpath('images', f'{browse_namespace}_0{str(len(counter))}_v1.jpg'), quality=85)
-                    print(f'exporting inspired image {str(len(counter))}...')  
+                    for smart_obj in images:
+                        if smart_obj.kind == "smartobject": 
+                            counter.append(layer)
+                            image = images.compose()
+                            image.convert('RGB').save(
+                            Path(psd_path).joinpath('images', f'{image_namespace}_{browse_namespace}_0{str(len(counter))}_v1.jpg'), quality=85)
+                            print(f'exporting inspired image {str(len(counter))}...')  
 ###                                           
 def get_blog_data(artboard):
     browse_namespace = "blog"
@@ -168,26 +181,37 @@ def get_blog_data(artboard):
                         if title.kind == 'type':
                             outputDictionary['Blog']['Headline'] = title.text.lower().strip()
             for copy in reversed(layer):
-                if 'block' in copy.name.lower() and copy.visible:
-                    for cta in copy:
+                if 'block' in copy.name.lower() and copy.kind == "group":
+                    count +=1
+                    for cta in copy:                 
                         if "COPY".lower() in cta.name.lower():
                             for items in cta:
                                 if items.kind =='type':
-                                    count +=1
                                     block = 'block '.lower() + str(count)
                                     outputDictionary['Blog'][block] = {}
                                     outputDictionary['Blog'][block]['text'] = cta[0].text.lower().strip()
                                     outputDictionary['Blog'][block]['Button_Text'] = cta[1].text.lower().strip()
-                       
-# ###                        
-# ### Run functions                            
-# get_title()
-# get_hero_images(desktopArtboard)
-# get_browse_gifts_data(desktopArtboard)
-# # get_popular_cats_images(desktopArtboard)
-# get_gifts_under_data(desktopArtboard)
-# get_inspiration_data(desktopArtboard)
+            outputDictionary['Blog']['count'] = count
+            for images in reversed(list(layer.descendants())):
+                if images.kind == 'group' and "Image".lower() in images.name.lower():
+                    for smart_obj in images:
+                        if smart_obj.kind == "smartobject": 
+                            counter.append(layer)
+                            image = images.compose()
+                            image.convert('RGB').save(
+                            Path(psd_path).joinpath('images', f'{image_namespace}_{browse_namespace}_0{str(len(counter))}_v1.jpg'), quality=85)
+                            print(f'exporting Blog image {str(len(counter))}...')  
+              
+### Run functions                            
+get_title()
+get_hero_images(desktopArtboard)
+get_browse_gifts_data(desktopArtboard)
+get_popular_cats_images(desktopArtboard)
+get_gifts_under_data(desktopArtboard)
+get_inspiration_data(desktopArtboard)
 get_blog_data(desktopArtboard)
+
+
 
 ### export json
 with codecs.open('./resources/data.json', 'w', encoding="utf-8") as json_file:

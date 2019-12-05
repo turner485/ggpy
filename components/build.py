@@ -7,6 +7,7 @@ _path = 'C://Users//Ben.Turner//Documents//code//python//ggpy//'
 os.makedirs(Path(_path).joinpath('production'), exist_ok=True)
 html_template = _path + 'templates//template.html'
 scss_template = _path + 'templates//template.scss'
+html_blocks = _path + 'templates//html//block.html'
 html_production = _path + 'production//index.html'
 scss_production = _path + 'production//UK.scss'
 ###
@@ -25,6 +26,10 @@ def get_html():
         file_data = file.read()
     return file_data
 ###
+def get_blocks():
+    with open(html_blocks, 'r') as file:
+        block_data = file.read()
+    return block_data
 # try get function 2 parameters 
 def try_get_data(data, a, b):
     try:
@@ -42,7 +47,7 @@ def try_get_row_data(data, a, b, c):
 # create main function that writes to html
 def main(data, html):
     file_data = html_hero_content(data, html)
-    file_data = html_browse_gifts_content(data, file_data)
+    file_data = html_browse_gifts_content(data, file_data, block_data)
     file_data = html_popular_categories_content(data, file_data)
     file_data = html_gifts_under_content(data, file_data)
     file_data = html_inspiration_content(data, file_data)
@@ -82,40 +87,38 @@ def scss_hero_content(data):
     except TypeError:
         pass
 ###
-def html_browse_gifts_content(data, html):
+def html_browse_gifts_content(data, html, block_data):
     #pass html through parameter 
+    count = try_get_data(data, 'Browse_Gifts', 'count')
     file_data = html
-    # get json data
-    Headline = try_get_data(data, 'Browse_Gifts', 'Headline')
-    blockOneButtonText = try_get_row_data(data, 'Browse_Gifts', 'block 1', 'Button_Text')
-    blockTwoButtonText = try_get_row_data(data, 'Browse_Gifts', 'block 2', 'Button_Text')
-    blockThreeButtonText = try_get_row_data(data, 'Browse_Gifts', 'block 3', 'Button_Text')
-    blockFourButtonText = try_get_row_data(data, 'Browse_Gifts', 'block 4', 'Button_Text')
-    blockOneImgSrc = try_get_row_data(data, 'Browse_Gifts', 'block 1', 'ImageSrc')
-    blockTwoImgSrc = try_get_row_data(data, 'Browse_Gifts', 'block 2', 'ImageSrc')
-    blockThreeImgSrc = try_get_row_data(data, 'Browse_Gifts', 'block 3', 'ImageSrc')
-    blockFourImgSrc = try_get_row_data(data, 'Browse_Gifts', 'block 4', 'ImageSrc')
-    BlockOneLink = try_get_row_data(data, 'Browse_Gifts', 'block 1', 'Link')
-    BlockTwoLink = try_get_row_data(data, 'Browse_Gifts', 'block 2', 'Link')
-    BlockThreeLink = try_get_row_data(data, 'Browse_Gifts', 'block 3', 'Link')
-    BlockFourLink = try_get_row_data(data, 'Browse_Gifts', 'block 4', 'Link')
-    #replace data
-    file_data = file_data.replace('[Browse_Gifts_Headline]', Headline)
-    file_data = file_data.replace('[Browse_Gifts_Block_1_Text]', blockOneButtonText)
-    file_data = file_data.replace('[Browse_Gifts_Block_2_Text]', blockTwoButtonText)
-    file_data = file_data.replace('[Browse_Gifts_Block_3_Text]', blockThreeButtonText)
-    file_data = file_data.replace('[Browse_Gifts_Block_4_Text]', blockFourButtonText)
-    file_data = file_data.replace('[Browse_Gifts_Block_1_Image_Source]', blockOneImgSrc)
-    file_data = file_data.replace('[Browse_Gifts_Block_2_Image_Source]', blockTwoImgSrc)
-    file_data = file_data.replace('[Browse_Gifts_Block_3_Image_Source]', blockThreeImgSrc)
-    file_data = file_data.replace('[Browse_Gifts_Block_4_Image_Source]', blockFourImgSrc)
-    file_data = file_data.replace('[Browse_Gifts_Block_1_Link]', BlockOneLink)
-    file_data = file_data.replace('[Browse_Gifts_Block_2_Link]', BlockTwoLink)
-    file_data = file_data.replace('[Browse_Gifts_Block_3_Link]', BlockThreeLink)
-    file_data = file_data.replace('[Browse_Gifts_Block_4_Link]', BlockFourLink)
-    # return data
-    return file_data
+    asd = ''
+    for i in range(count):
+        i+=1
+        block_data = block_data.replace(f'[Browse_Gifts_Block_{i-1}_Text]', f'[Browse_Gifts_Block_{i}_Text]')
+        block_data = block_data.replace(f'[Browse_Gifts_Block_{i-1}_Link]', f'[Browse_Gifts_Block_{i}_Link]')
+        block_data = block_data.replace(f'[Browse_Gifts_Block_{i-1}_Image_Source]', f'[Browse_Gifts_Block_{i}_Image_Source]')
+
+        browse_gifts_carousel = block_data
+
+        blockButtonText = try_get_row_data(data, 'Browse_Gifts', f'block {i}', 'Button_Text')    
+        blockButtonLink = try_get_row_data(data, 'Browse_Gifts', f'block {i}', 'Link')    
+        blockButtonImgSrc = try_get_row_data(data, 'Browse_Gifts', f'block {i}', 'ImageSrc')    
+        browse_gifts_carousel = browse_gifts_carousel.replace(f'[Browse_Gifts_Block_{i}_Text]', blockButtonText)
+        browse_gifts_carousel = browse_gifts_carousel.replace(f'[Browse_Gifts_Block_{i}_Link]', blockButtonLink)
+        browse_gifts_carousel = browse_gifts_carousel.replace(f'[Browse_Gifts_Block_{i}_Image_Source]', blockButtonImgSrc)
+        asd += browse_gifts_carousel
+        # print(browse_gifts_carousel)
+    
+        # # get json data
+        # Headline = try_get_data(data, 'Browse_Gifts', 'Headline')
+        # #replace data
+        # file_data = file_data.replace('[Browse_Gifts_Headline]', Headline)
+        # # return data
+    return asd    
+    
 ###
+def a(carousel_a):
+    print(carousel_a)
 def html_popular_categories_content(data, html):
     #pass html through parameter 
     file_data = html
@@ -238,5 +241,8 @@ def html_blog_content(data, html):
 if __name__ == "__main__":
     data = get_json_data()
     html = get_html()
+    block_data = get_blocks()
+    carousel_a = html_browse_gifts_content(data, html, block_data)
     main(data, html)
     scss_hero_content(data)
+    a(carousel_a)
