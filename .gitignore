@@ -1,3 +1,5 @@
 *.psd
 *.jpg
+*.scss
+*.html
 resources/images.zip
