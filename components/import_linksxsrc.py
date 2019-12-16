@@ -118,8 +118,9 @@ get_gifts_under_block_content()
 get_inspiration_block_content()
 get_blog_block_content()
 popular_categories()
-
 import_links()
+
+print('Populating image sources and links to data.json...')
 
 with codecs.open(_path +'data.json', 'w', encoding="utf-8") as outfile:
     json.dump(outputDictionary, outfile, indent=4, sort_keys=True, ensure_ascii=False)

@@ -241,6 +241,9 @@ def html_blog_content(data, html, blog_block_data):
     html = html.replace('[Blog_Block]', file_data)
     return html
 ### Run functions 
+
+print('building page...')
+
 if __name__ == "__main__":
     data = get_json_data()
     html = get_html()
@@ -248,3 +251,5 @@ if __name__ == "__main__":
     blog_block_data = get_blog_blocks()
     main(data, html)
     scss_hero_content(data)
+
+
