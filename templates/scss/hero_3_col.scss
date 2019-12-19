@@ -1,0 +1,86 @@
+#hero-col {
+	position: relative;
+	@include max(767) {
+		padding: 0;
+		height: auto;
+	}
+	.background-container {
+		display: -ms-inline-grid;
+		display: inline-grid;
+		-ms-grid-rows: 1fr;
+		-ms-grid-columns: 1fr 10px 1fr 10px 1fr;
+		grid-template-columns: 1fr 10px 1fr 10px 1fr;
+		height: 650px;
+		width: 100%;
+		justify-content: center;
+		@include max(991) {
+			-ms-grid-columns: 1fr 10px 1fr;
+			grid-template-columns: 1fr 10px 1fr;
+		}
+	}
+	.background-A {
+		background-image: url("[Hero_Image_One]");
+		background-repeat: no-repeat;
+		background-position: 50% 50%;
+		-ms-grid-row: 1;
+		grid-row: 1;
+		-ms-grid-column: 1;
+		grid-column: 1;
+	}
+	.background-B {
+		background-image: url("[Hero_Image_Two]");
+		background-repeat: no-repeat;
+		background-position: 30% 50%;
+		max-width: 786px;
+		-ms-grid-row: 1;
+		grid-row: 1;
+		-ms-grid-column: 3;
+		grid-column: 3;
+	}
+	.background-C {
+		background-image: url("[Hero_Image_Three]");
+		background-repeat: no-repeat;
+		background-position: 50% 50%;
+		max-width: 786px;
+		-ms-grid-row: 1;
+		grid-row: 1;
+		-ms-grid-column: 5;
+		grid-column: 5;
+	}
+	.text-container {
+		text-align: center;
+		position: absolute;
+		transform: translate(-50%, 0%);
+		left: 50%;
+		bottom: 10%;
+		@include minmax(768, 991) {
+			
+		}
+		@include max(767) {
+			
+		}
+		
+		h2 {
+			@include display-text($fut, 36px, 1.2, 0.08em, #fff, null, null);
+			text-shadow: 1px 1px 10px rgba(0, 0, 0, 0.8);
+			margin: 0 auto;
+			white-space: nowrap;
+			@include minmax(992, 1450) {
+			
+			}
+			@include minmax(768, 991) {
+				
+			}
+			@include max(767) {
+				
+			}
+		}
+		span {
+			@include button(#000, #fff);
+			margin: 15px auto 0;
+			@include max(767) {
+				
+			}
+		}
+	}
+}

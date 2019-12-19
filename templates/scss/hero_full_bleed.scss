@@ -1,0 +1,37 @@
+#hero-col {
+	position: relative;
+	@include min(768) {
+        background-image: url("[Hero_Image_One]");
+		background-repeat: no-repeat;
+		background-position: 70% 50%;
+		height: 600px;
+		max-width: 1569px;
+	}
+	@include max(767) {
+		padding: 0;
+		height: auto;
+	}
+	.text-container {
+		text-align: center;
+		position: absolute;
+		transform: translate(-50%, 0%);
+		left: 50%;
+		top: 50%;
+		@include max(767) {
+		}
+		h2,
+		h3 {
+			@include display-text($fut, 36px, 1.2, 0.08em, #fff, null, null);
+			text-shadow: 1px 1px 10px rgba(0, 0, 0, 0.8);
+			@include minmax(768, 991) {
+			}
+			@include max(767) {
+			}
+		}
+		span {
+			@include button(#b01b2e, #fff);
+			@include max(767) {
+			}
+		}
+	}
+}

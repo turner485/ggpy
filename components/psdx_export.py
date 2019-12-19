@@ -44,7 +44,7 @@ user_directory = absolute
 psd = PSDImage.open(path_of_psd)
 os.makedirs(Path(psd_file_path).joinpath('./images/'), exist_ok=True)
 
-outputDictionary = {'Headline': {}, 'Hero': {}, 'Browse_Gifts': {}, 'Popular_Categories': {}, 'Gifts_Under': {}, 'Inspiration': {}, 'Blog': {}}
+outputDictionary = {'Hero': {}, 'Browse_Gifts': {}, 'Popular_Categories': {}, 'Gifts_Under': {}, 'Inspiration': {}, 'Blog': {}}
 
 
 desktopArtboard = None
@@ -53,18 +53,20 @@ for i in psd:
     if 'DESKTOP'.lower() in i.name.lower() and i.kind == "artboard" and i.visible:
         desktopArtboard = i
 ###
-def get_title():
-        for layer in reversed(desktopArtboard):
-            if "TITLE".lower() in layer.name.lower() and layer.visible:
-                for title in layer:
-                    if title.kind =='type':
-                        outputDictionary['Headline']['Heading'] = title.name.lower().strip()
+       
 ### 
 def get_hero_images(artboard):
     hero_namespace = "hero"
     counter = []
-    for layer in reversed(list(artboard.descendants())):   
-        if "TOP BANNER".lower() in layer.name.lower() and layer.visible:
+    for layer in reversed(desktopArtboard):
+        if "HERO".lower() in layer.name.lower() and layer.visible:
+            outputDictionary['Hero']['Type'] = layer.name.upper()
+        if "TITLE".lower() in layer.name.lower() and layer.visible:
+            for title in layer:
+                if title.kind =='type':
+                    outputDictionary['Hero']['Main_Title'] = title.name.lower().strip()
+    for layer in reversed(list(artboard.descendants())):
+        if "HERO".lower() in layer.name.lower() and layer.visible:
             for images in reversed(list(layer)):
                 if images.kind == 'group' and "Image".lower() in images.name.lower():
                     counter.append(images)
@@ -244,7 +246,7 @@ def get_blog_data(artboard):
                                 pass
               
 ### Run functions                            
-get_title()
+# get_title()
 get_hero_images(desktopArtboard)
 get_gifts_data(desktopArtboard)
 get_popular_cats_images(desktopArtboard)
