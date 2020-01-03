@@ -44,7 +44,7 @@ user_directory = absolute
 psd = PSDImage.open(path_of_psd)
 os.makedirs(Path(psd_file_path).joinpath('./images/'), exist_ok=True)
 
-outputDictionary = {'Hero': {}, 'Browse_Gifts': {}, 'Popular_Categories': {}, 'Gifts_Under': {}, 'Inspiration': {}, 'Blog': {}}
+outputDictionary = {'Hero': {}, 'Browse_Gifts': {}, 'Popular_Categories': {}, 'Gifts_Under_20': {}, 'Gifts_Under_40': {}, 'Inspiration': {}, 'Blog': {}}
 
 
 desktopArtboard = None
@@ -137,31 +137,31 @@ def get_popular_cats_images(artboard):
                         if right_block.kind =='type':
                             outputDictionary['Popular_Categories']['Right']['Button_Text'] = right_block.text.lower().replace(' >', '').strip()
 ###                        
-def get_gifts_under_data(artboard):
-    _namespace = "gifts-under"
+def get_gifts_under_twenty_data(artboard):
+    _namespace = "gifts-under-20"
     counter = []
     count = 0
     for layer in reversed(desktopArtboard):
-        if 'GIFTS FOR UNDER'.lower() in layer.name.lower():
+        if 'GIFTS UNDER 20'.lower() in layer.name.lower():
             for copy in layer:
                 if 'COPY'.lower() in copy.name.lower():
                     for title in copy:
                         if title.kind == 'type':
-                            outputDictionary['Gifts_Under']['Headline'] = title.text.lower().strip().replace('£', '&pound;').strip()
+                            outputDictionary['Gifts_Under_20']['Headline'] = title.text.lower().strip().replace('£', '&pound;').strip()
                         if title.kind == 'group' and title.visible:
                             for cta in title:
                                 if cta.kind == 'type':
-                                    outputDictionary['Gifts_Under']['Button_Text'] = cta.text.lower().replace(' >', '').strip()                
+                                    outputDictionary['Gifts_Under_20']['Button_Text'] = cta.text.lower().replace(' >', '').strip()                
             for copy in layer:
                 if 'block' in copy.name.lower() and copy.kind == 'group':
                     for cta in copy:
                         if cta.kind == 'type':
                             count += 1
                             block = 'block '.lower() + str(count)
-                            outputDictionary['Gifts_Under'][block] = {}
-                            block_text = outputDictionary['Gifts_Under'][block]['Button_Text'] = cta.text.lower().replace('\r', '<br>').strip()
-                            block_text =  outputDictionary['Gifts_Under'][block]['Button_Text'] = block_text.replace('£', '&pound')
-                    outputDictionary['Gifts_Under']['count'] = count
+                            outputDictionary['Gifts_Under_20'][block] = {}
+                            block_text = outputDictionary['Gifts_Under_20'][block]['Button_Text'] = cta.text.lower().replace('\r', '<br>').strip()
+                            block_text =  outputDictionary['Gifts_Under_20'][block]['Button_Text'] = block_text.replace('£', '&pound')
+                    outputDictionary['Gifts_Under_20']['count'] = count
             for images in reversed(list(layer.descendants())):
                 if images.kind == 'group' and "Image".lower() in images.name.lower():
                     for smart_obj in images:
@@ -171,7 +171,45 @@ def get_gifts_under_data(artboard):
                                 image = smart_obj.compose()
                                 image.convert('RGB').save(
                                 Path(psd_file_path).joinpath('images', f'{image_namespace}_{_namespace}_0{str(len(counter))}_v1.jpg'), quality=85)
-                                print(f'exporting gifts under image {str(len(counter))}...')  
+                                print(f'exporting gifts under 20 image {str(len(counter))}...')  
+                            except AttributeError:
+                                pass
+###                                   
+def get_gifts_under_forty_data(artboard):
+    _namespace = "gifts-under-40"
+    counter = []
+    count = 0
+    for layer in reversed(desktopArtboard):
+        if 'GIFTS UNDER 40'.lower() in layer.name.lower():
+            for copy in layer:
+                if 'COPY'.lower() in copy.name.lower():
+                    for title in copy:
+                        if title.kind == 'type':
+                            outputDictionary['Gifts_Under_40']['Headline'] = title.text.lower().strip().replace('£', '&pound;').strip()
+                        if title.kind == 'group' and title.visible:
+                            for cta in title:
+                                if cta.kind == 'type':
+                                    outputDictionary['Gifts_Under_40']['Button_Text'] = cta.text.lower().replace(' >', '').strip()                
+            for copy in layer:
+                if 'block' in copy.name.lower() and copy.kind == 'group':
+                    for cta in copy:
+                        if cta.kind == 'type':
+                            count += 1
+                            block = 'block '.lower() + str(count)
+                            outputDictionary['Gifts_Under_40'][block] = {}
+                            block_text = outputDictionary['Gifts_Under_40'][block]['Button_Text'] = cta.text.lower().replace('\r', '<br>').strip()
+                            block_text =  outputDictionary['Gifts_Under_40'][block]['Button_Text'] = block_text.replace('£', '&pound')
+                    outputDictionary['Gifts_Under_40']['count'] = count
+            for images in reversed(list(layer.descendants())):
+                if images.kind == 'group' and "Image".lower() in images.name.lower():
+                    for smart_obj in images:
+                        if smart_obj.kind == "smartobject":         
+                            try:
+                                counter.append(layer)
+                                image = smart_obj.compose()
+                                image.convert('RGB').save(
+                                Path(psd_file_path).joinpath('images', f'{image_namespace}_{_namespace}_0{str(len(counter))}_v1.jpg'), quality=85)
+                                print(f'exporting gifts under 40 image {str(len(counter))}...')  
                             except AttributeError:
                                 pass
 ###                                   
@@ -180,7 +218,7 @@ def get_inspiration_data(artboard):
     counter = []
     count = 0
     for layer in reversed(desktopArtboard):
-        if 'INSPIRED'.lower() in layer.name.lower():
+        if 'INSPIRATION'.lower() in layer.name.lower():
             for copy in layer:
                 if 'COPY'.lower() in copy.name.lower():
                     for title in copy:
@@ -250,7 +288,8 @@ def get_blog_data(artboard):
 get_hero_images(desktopArtboard)
 get_gifts_data(desktopArtboard)
 get_popular_cats_images(desktopArtboard)
-get_gifts_under_data(desktopArtboard)
+get_gifts_under_twenty_data(desktopArtboard)
+get_gifts_under_forty_data(desktopArtboard)
 get_inspiration_data(desktopArtboard)
 get_blog_data(desktopArtboard)
 

@@ -203,32 +203,61 @@ def html_popular_categories_content(data):
     #return data
     return file_data
 ###
-def html_gifts_under_content(data, block_data):
-    count = try_get_data(data, 'Gifts_Under', 'count')
-    with open(absolute_path_ + '//templates//html//carousels//gifts_under_carousel.html') as file:
+def html_gifts_under_twenty_content(data, block_data):
+    count = try_get_data(data, 'Gifts_Under_20', 'count')
+    with open(absolute_path_ + '//templates//html//carousels//gifts_under_20_carousel.html') as file:
         file_data = file.read()
     carousel_pop_data = ''
-    Headline = try_get_data(data, 'Gifts_Under', 'Headline')
-    ButtonText = try_get_data(data, 'Gifts_Under', 'Button_Text')
-    ButtonLink = try_get_data(data, 'Gifts_Under', 'Link')
+    Headline = try_get_data(data, 'Gifts_Under_20', 'Headline')
+    ButtonText = try_get_data(data, 'Gifts_Under_20', 'Button_Text')
+    ButtonLink = try_get_data(data, 'Gifts_Under_20', 'Link')
     #replace data
-    file_data = file_data.replace('[Gifts_Under_Headline]', Headline)
-    file_data = file_data.replace('[Gifts_Under_Button_Text]', ButtonText)
-    file_data = file_data.replace('[Gifts_Under_Button_Link]', ButtonLink)
+    file_data = file_data.replace('[Gifts_Under_20_Headline]', Headline)
+    file_data = file_data.replace('[Gifts_Under_20_Button_Text]', ButtonText)
+    file_data = file_data.replace('[Gifts_Under_20_Button_Link]', ButtonLink)
     for i in range(count):
         i+=1
         block_data = block_data.replace(f'[Carousel_Block_{i-1}_Text]', f'[Carousel_Block_{i}_Text]')
         block_data = block_data.replace(f'[Carousel_Block_{i-1}_Link]', f'[Carousel_Block_{i}_Link]')
         block_data = block_data.replace(f'[Carousel_Block_{i-1}_Image_Source]', f'[Carousel_Block_{i}_Image_Source]')
         carousel_empty_data = block_data
-        blockButtonText = try_get_row_data(data, 'Gifts_Under', f'block {i}', 'Button_Text')    
-        blockButtonLink = try_get_row_data(data, 'Gifts_Under', f'block {i}', 'Link')    
-        blockButtonImgSrc = try_get_row_data(data, 'Gifts_Under', f'block {i}', 'ImageSrc')    
+        blockButtonText = try_get_row_data(data, 'Gifts_Under_20', f'block {i}', 'Button_Text')    
+        blockButtonLink = try_get_row_data(data, 'Gifts_Under_20', f'block {i}', 'Link')    
+        blockButtonImgSrc = try_get_row_data(data, 'Gifts_Under_20', f'block {i}', 'ImageSrc')    
         carousel_empty_data = carousel_empty_data.replace(f'[Carousel_Block_{i}_Text]', blockButtonText)
         carousel_empty_data = carousel_empty_data.replace(f'[Carousel_Block_{i}_Link]', blockButtonLink)
         carousel_empty_data = carousel_empty_data.replace(f'[Carousel_Block_{i}_Image_Source]', blockButtonImgSrc)
         carousel_pop_data += carousel_empty_data
-    file_data = file_data.replace('[Gifts_Under_Carousel_Row]', carousel_pop_data)
+    file_data = file_data.replace('[Gifts_Under_20_Carousel_Row]', carousel_pop_data)
+    # return data
+    return file_data
+###
+def html_gifts_under_forty_content(data, block_data):
+    count = try_get_data(data, 'Gifts_Under_40', 'count')
+    with open(absolute_path_ + '//templates//html//carousels//gifts_under_40_carousel.html') as file:
+        file_data = file.read()
+    carousel_pop_data = ''
+    Headline = try_get_data(data, 'Gifts_Under_40', 'Headline')
+    ButtonText = try_get_data(data, 'Gifts_Under_40', 'Button_Text')
+    ButtonLink = try_get_data(data, 'Gifts_Under_40', 'Link')
+    #replace data
+    file_data = file_data.replace('[Gifts_Under_40_Headline]', Headline)
+    file_data = file_data.replace('[Gifts_Under_40_Button_Text]', ButtonText)
+    file_data = file_data.replace('[Gifts_Under_40_Button_Link]', ButtonLink)
+    for i in range(count):
+        i+=1
+        block_data = block_data.replace(f'[Carousel_Block_{i-1}_Text]', f'[Carousel_Block_{i}_Text]')
+        block_data = block_data.replace(f'[Carousel_Block_{i-1}_Link]', f'[Carousel_Block_{i}_Link]')
+        block_data = block_data.replace(f'[Carousel_Block_{i-1}_Image_Source]', f'[Carousel_Block_{i}_Image_Source]')
+        carousel_empty_data = block_data
+        blockButtonText = try_get_row_data(data, 'Gifts_Under_40', f'block {i}', 'Button_Text')    
+        blockButtonLink = try_get_row_data(data, 'Gifts_Under_40', f'block {i}', 'Link')    
+        blockButtonImgSrc = try_get_row_data(data, 'Gifts_Under_40', f'block {i}', 'ImageSrc')    
+        carousel_empty_data = carousel_empty_data.replace(f'[Carousel_Block_{i}_Text]', blockButtonText)
+        carousel_empty_data = carousel_empty_data.replace(f'[Carousel_Block_{i}_Link]', blockButtonLink)
+        carousel_empty_data = carousel_empty_data.replace(f'[Carousel_Block_{i}_Image_Source]', blockButtonImgSrc)
+        carousel_pop_data += carousel_empty_data
+    file_data = file_data.replace('[Gifts_Under_40_Carousel_Row]', carousel_pop_data)
     # return data
     return file_data
 ###
@@ -286,7 +315,7 @@ def main():
         sass_file = sass_file.replace('[Hero]', output_sass)
         with open(scss_production, 'w') as scss_file_prod:
             scss_file_prod.write(sass_file)    
-    asd = select_html_hero(data) + html_browse_gifts_content(data, block_data) + html_popular_categories_content(data) + html_gifts_under_content(data, block_data) + html_inspiration_content(data, block_data) + html_blog_content(data, blog_block_data)
+    asd = select_html_hero(data) + html_browse_gifts_content(data, block_data) + html_popular_categories_content(data) + html_gifts_under_twenty_content(data, block_data) + html_gifts_under_forty_content(data, block_data) + html_inspiration_content(data, block_data) + html_blog_content(data, blog_block_data)
     with open(html_production, 'w') as html_file:
         html_file.write(asd)
 ### function vars ###
