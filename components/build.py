@@ -3,6 +3,7 @@ import json
 from pathlib import Path
 import os
 ###
+### create path vars
 path = Path.cwd()
 absolute_path_ = (str(path))
 absolute_path_ = absolute_path_
@@ -12,6 +13,8 @@ html_blocks = absolute_path_ + '//templates//html//blocks//block.html'
 html_blog_blocks = absolute_path_ + '//templates//html//blocks//blog_block.html'
 html_production = absolute_path_ + '//production//index.html'
 scss_production = absolute_path_ + '//production//UK.scss'
+###
+###
 def get_json_data():
     try:
         with open('resources/data.json') as json_file:
@@ -20,15 +23,18 @@ def get_json_data():
     except:
         return None
 ###
+###
 def get_blocks():
     with open(html_blocks, 'r') as file:
         block_data = file.read()
     return block_data
 ###
+###
 def get_blog_blocks():
     with open(html_blog_blocks, 'r') as file:
         blog_block_data = file.read()
     return blog_block_data
+###
 ###
 def try_get_data(data, a, b):
     try:
@@ -36,12 +42,13 @@ def try_get_data(data, a, b):
     except KeyError:
         return "An error occured"
 ###
+###
 def try_get_row_data(data, a, b, c):
     try:
         return data[a][b][c]
     except KeyError:
         return "An error occured"
-### END ###
+###
 ### HERO SASS ###
 def scss_hero_full_bleed(data):
     scss_full_bleed = absolute_path_ + "/templates/scss/hero_full_bleed.scss"
@@ -56,6 +63,7 @@ def scss_hero_full_bleed(data):
         return file_data
     except TypeError:
         pass
+###
 ###
 def scss_hero_2_col(data):
     scss_2_col = absolute_path_ + "/templates/scss/hero_2_col.scss"
@@ -73,6 +81,7 @@ def scss_hero_2_col(data):
     except TypeError:
         pass
 ###
+###
 def scss_hero_2_split_right(data):
     scss_2_col = absolute_path_ + "/templates/scss/hero_2_split_right.scss"
     try:
@@ -88,6 +97,7 @@ def scss_hero_2_split_right(data):
         return file_data
     except TypeError:
         pass
+###
 ###
 def scss_hero_3_col(data):
     scss_3_col = absolute_path_ + "/templates/scss/hero_3_col.scss"
@@ -106,7 +116,8 @@ def scss_hero_3_col(data):
         return file_data
     except TypeError:
         pass
-### END ###
+###
+###
 def select_scss_hero(data):
     hero_type = data['Hero']['Type']
     if "HERO" in hero_type:
@@ -122,6 +133,7 @@ def select_scss_hero(data):
         if "HERO - 3 COL".upper() in hero_type:
             scss_content = scss_hero_3_col(data)
             return scss_content
+###
 ### HTML STUFFS ###
 def html_hero_content(data, content):
     with open(content, 'r') as file:
@@ -137,6 +149,7 @@ def html_hero_content(data, content):
         file_data = file_data.replace('[Hero_Button_Text]', heroButtonText)
         file_data = file_data.replace('[Hero_Link]', heroLink)
     return file_data
+###
 ###
 def select_html_hero(data):
     hero_type = data['Hero']['Type']
@@ -157,6 +170,7 @@ def select_html_hero(data):
             html_3_col = absolute_path_ + "/templates/html/hero/hero_3_col.html"
             html_content = html_hero_content(data, html_3_col)
             return html_content
+###
 ###
 def html_browse_gifts_content(data, block_data):
     #pass html through parameter 
@@ -182,6 +196,7 @@ def html_browse_gifts_content(data, block_data):
     file_data = file_data.replace('[Browse_Gifts_Carousel_Row]', carousel_pop_data)
     return file_data
 ###
+###
 def html_popular_categories_content(data):
     #pass html through parameter 
     with open(absolute_path_ + '//templates//html//misc//Popular_Categories.html') as file:
@@ -202,6 +217,7 @@ def html_popular_categories_content(data):
     file_data = file_data.replace('[Popular_Categories_Right_Link]', PopularCategoriesRightLink)
     #return data
     return file_data
+###
 ###
 def html_gifts_under_twenty_content(data, block_data):
     count = try_get_data(data, 'Gifts_Under_20', 'count')
@@ -232,6 +248,7 @@ def html_gifts_under_twenty_content(data, block_data):
     # return data
     return file_data
 ###
+###
 def html_gifts_under_forty_content(data, block_data):
     count = try_get_data(data, 'Gifts_Under_40', 'count')
     with open(absolute_path_ + '//templates//html//carousels//gifts_under_40_carousel.html') as file:
@@ -261,6 +278,7 @@ def html_gifts_under_forty_content(data, block_data):
     # return data
     return file_data
 ###
+###
 def html_inspiration_content(data, block_data):
     #pass html through parameter 
     count = try_get_data(data, 'Inspiration', 'count')
@@ -285,6 +303,7 @@ def html_inspiration_content(data, block_data):
     file_data = file_data.replace('[Inspiration_Carousel_Row]', carousel_pop_data)
     return file_data
 ###
+###
 def html_blog_content(data, blog_block_data):
     #pass html through parameter 
     count = try_get_data(data, 'Blog', 'count')
@@ -308,21 +327,34 @@ def html_blog_content(data, blog_block_data):
         carousel_pop_data += carousel_empty_data
     file_data = file_data.replace('[Blog_Carousel_Row]', carousel_pop_data)
     return file_data
+###
 ### Run functions 
 def main():
     with open(scss_template) as file:
         sass_file = file.read()
         sass_file = sass_file.replace('[Hero]', output_sass)
         with open(scss_production, 'w') as scss_file_prod:
-            scss_file_prod.write(sass_file)    
-    asd = select_html_hero(data) + html_browse_gifts_content(data, block_data) + html_popular_categories_content(data) + html_gifts_under_twenty_content(data, block_data) + html_gifts_under_forty_content(data, block_data) + html_inspiration_content(data, block_data) + html_blog_content(data, blog_block_data)
+            scss_file_prod.write(sass_file)   
+
+    concat_data = hero_html + html_browse_gifts_carousel + html_popular_categories + html_gifts_under_twenty_carousel + html_gifts_under_forty_carousel + html_inspiration_carousel + html_blog_carousel
     with open(html_production, 'w') as html_file:
-        html_file.write(asd)
+        html_file.write(concat_data)
+        
 ### function vars ###
 data = get_json_data()
 block_data = get_blocks()
 blog_block_data = get_blog_blocks()
 output_sass = select_scss_hero(data)
+
+### function data string vars ###
+hero_html = select_html_hero(data)
+html_browse_gifts_carousel = html_browse_gifts_content(data, block_data)
+html_popular_categories = html_popular_categories_content(data)
+html_gifts_under_twenty_carousel = html_gifts_under_twenty_content(data, block_data)
+html_gifts_under_forty_carousel = html_gifts_under_forty_content(data, block_data)
+html_inspiration_carousel = html_inspiration_content(data, block_data)
+html_blog_carousel = html_blog_content(data, blog_block_data)
+
 ###
 print('building page...')
 if __name__ == "__main__":

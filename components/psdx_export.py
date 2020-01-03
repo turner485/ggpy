@@ -5,25 +5,22 @@ import csv
 from pathlib import Path
 import os
 import codecs
-
+###
 # create absolute path for linux windows
 path = Path.cwd()
-
 # COMMENT BELOW IF YOU ARE NOT INTENDING OF USING BASH SCRIPT
 # absolute = (str(path)) + '../..' 
 # UNCOMMENT IF NOT USING BASH SCRIPT
-
+### promt file location
 absolute = (str(path)) 
 psd_file_path = input('please enter the file path:')
 psd_name = input('PSD name:') + '.psd'
-
 if psd_name:
     for file in os.listdir(psd_file_path):
         if psd_name in file:
             psd_name = file
             path_of_psd = Path(psd_file_path).joinpath(file)
             break
-
 """ if input is none finds any psd file in directory """
 if not psd_name:
     for file in os.listdir(psd_file_path):
@@ -31,29 +28,22 @@ if not psd_name:
             psd_name = file
             path_of_psd = Path(psd_file_path).joinpath(file)
             break
-
 if not path_of_psd:
     path_of_psd = Path(psd_file_path).joinpath(psd_file_path)
-
 print('*CAUTION* please use hyphens instead of underscores\nexample == 201907_05_AW19_C1_R1_Homepage_UK \n')
-
 image_namespace = input('naming convention:')
-
-# user_directory = absolute + './resources/'
+###
+###
 user_directory = absolute 
 psd = PSDImage.open(path_of_psd)
 os.makedirs(Path(psd_file_path).joinpath('./images/'), exist_ok=True)
-
 outputDictionary = {'Hero': {}, 'Browse_Gifts': {}, 'Popular_Categories': {}, 'Gifts_Under_20': {}, 'Gifts_Under_40': {}, 'Inspiration': {}, 'Blog': {}}
-
-
 desktopArtboard = None
 ###
 for i in psd:
     if 'DESKTOP'.lower() in i.name.lower() and i.kind == "artboard" and i.visible:
         desktopArtboard = i
-###
-       
+###  
 ### 
 def get_hero_images(artboard):
     hero_namespace = "hero"
@@ -79,6 +69,7 @@ def get_hero_images(artboard):
                         if copy.kind =='type':
                             outputDictionary['Hero']['Headline'] = images[2].name.lower().strip()
                             outputDictionary['Hero']['Button_Text'] = images[1].name.lower().replace(' >', '').strip()
+###
 ###
 def get_gifts_data(artboard):
     _namespace = "browse-gifts"
@@ -110,7 +101,8 @@ def get_gifts_data(artboard):
                                 print(f'exporting browse gift image {str(len(counter))}...')  
                             except AttributeError:
                                 pass
-###                     
+###
+###               
 def get_popular_cats_images(artboard):
     popular_namespace = "popular-categories"
     outputDictionary['Popular_Categories']['Left'] = {}
@@ -136,7 +128,8 @@ def get_popular_cats_images(artboard):
                             print('exporting popular categories right image...')  
                         if right_block.kind =='type':
                             outputDictionary['Popular_Categories']['Right']['Button_Text'] = right_block.text.lower().replace(' >', '').strip()
-###                        
+### 
+###                       
 def get_gifts_under_twenty_data(artboard):
     _namespace = "gifts-under-20"
     counter = []
@@ -174,7 +167,8 @@ def get_gifts_under_twenty_data(artboard):
                                 print(f'exporting gifts under 20 image {str(len(counter))}...')  
                             except AttributeError:
                                 pass
-###                                   
+### 
+###                                  
 def get_gifts_under_forty_data(artboard):
     _namespace = "gifts-under-40"
     counter = []
@@ -212,6 +206,7 @@ def get_gifts_under_forty_data(artboard):
                                 print(f'exporting gifts under 40 image {str(len(counter))}...')  
                             except AttributeError:
                                 pass
+###
 ###                                   
 def get_inspiration_data(artboard):
     _namespace = "inspiration"
@@ -245,14 +240,14 @@ def get_inspiration_data(artboard):
                                 print(f'exporting inspo gift image {str(len(counter))}...')  
                             except AttributeError:
                                 pass
-###                                           
+###  
+###                                         
 def get_blog_data(artboard):
     _namespace = "blog"
     counter = []
     count = 0
     for layer in reversed(desktopArtboard):
         if 'BLOG'.lower() in layer.name.lower():
-
             for headline in layer:
                 if 'COPY'.lower() in headline.name.lower():
                     for title in headline:
@@ -282,9 +277,8 @@ def get_blog_data(artboard):
                                 print(f'exporting blog image {str(len(counter))}...')  
                             except AttributeError:
                                 pass
-              
-### Run functions                            
-# get_title()
+###
+### Run functions
 get_hero_images(desktopArtboard)
 get_gifts_data(desktopArtboard)
 get_popular_cats_images(desktopArtboard)
@@ -292,9 +286,7 @@ get_gifts_under_twenty_data(desktopArtboard)
 get_gifts_under_forty_data(desktopArtboard)
 get_inspiration_data(desktopArtboard)
 get_blog_data(desktopArtboard)
-
-print('Populating data.json...')
-
 ### export json
 with codecs.open('./resources/data.json', 'w', encoding="utf-8") as json_file:
     json.dump(outputDictionary, json_file, indent=4, sort_keys=True, ensure_ascii=False)
+print('Populating data.json...')
