@@ -1,7 +1,7 @@
 #hero-col {
 	position: relative;
 	@include min(768) {
-        background-image: url("[Hero_Image_One]");
+        background-image: url("//cdn.joules.com[Hero_Image_One]");
 		background-repeat: no-repeat;
 		background-position: 70% 50%;
 		height: 600px;

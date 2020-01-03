@@ -73,6 +73,22 @@ def scss_hero_2_col(data):
     except TypeError:
         pass
 ###
+def scss_hero_2_split_right(data):
+    scss_2_col = absolute_path_ + "/templates/scss/hero_2_split_right.scss"
+    try:
+        with open(scss_2_col, 'r') as file:
+            file_data = file.read()
+            # get data
+            heroImageOne = try_get_data(data, 'Hero', 'Image_One')
+            heroImageTwo = try_get_data(data, 'Hero', 'Image_Two')
+            # data replace
+            file_data = file_data.replace('[Hero_Image_One]', heroImageOne)
+            file_data = file_data.replace('[Hero_Image_Two]', heroImageTwo)
+            # build sass
+        return file_data
+    except TypeError:
+        pass
+###
 def scss_hero_3_col(data):
     scss_3_col = absolute_path_ + "/templates/scss/hero_3_col.scss"
     try:
@@ -99,6 +115,9 @@ def select_scss_hero(data):
             return scss_content
         if "HERO - 2 COL".upper() in hero_type:
             scss_content = scss_hero_2_col(data)
+            return scss_content
+        if "HERO - 2 SPLIT RIGHT".upper() in hero_type:
+            scss_content = scss_hero_2_split_right(data)
             return scss_content
         if "HERO - 3 COL".upper() in hero_type:
             scss_content = scss_hero_3_col(data)
@@ -128,6 +147,10 @@ def select_html_hero(data):
             return html_content
         if "HERO - 2 COL".upper() in hero_type:
             html_2_col = absolute_path_ + "/templates/html/hero/hero_2_col.html"
+            html_content = html_hero_content(data, html_2_col)
+            return html_content
+        if "HERO - 2 SPLIT RIGHT".upper() in hero_type:
+            html_2_col = absolute_path_ + "/templates/html/hero/hero_2_split_right.html"
             html_content = html_hero_content(data, html_2_col)
             return html_content
         if "HERO - 3 COL".upper() in hero_type:
