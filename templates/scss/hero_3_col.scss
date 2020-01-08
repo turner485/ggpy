@@ -70,7 +70,7 @@
 			@include max(767) {
 			}
 		}
-		span {
+		span.cta {
 			@include button(#000, #fff);
 			margin: 15px auto 0;
 			@include max(767) {

@@ -72,7 +72,7 @@
 				font-size: get-vw-screen(56px, 767);
 			}
 		}
-		button {
+		span.cta {
 			@include button(#b23459, #fff);
 			margin: 15px auto 0;
 			@include max(767) {

@@ -28,7 +28,7 @@
 			@include max(767) {
 			}
 		}
-		span {
+		span.cta {
 			@include button(#b01b2e, #fff);
 			@include max(767) {
 			}
