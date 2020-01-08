@@ -31,6 +31,10 @@ def get_hero_content():
             outputDictionary['Hero']['Image_Two'] = image_url.strip()
         if 'hero-03' in image_url:
             outputDictionary['Hero']['Image_Three'] = image_url.strip()
+        if 'tablet-01' in image_url:
+            outputDictionary['Hero']['Image_Tablet'] = image_url.strip()
+        if 'mobile-01' in image_url:
+            outputDictionary['Hero']['Image_Mobile'] = image_url.strip()
 ###
 ###
 def get_browse_block_content():

@@ -38,11 +38,15 @@ user_directory = absolute
 psd = PSDImage.open(path_of_psd)
 os.makedirs(Path(psd_file_path).joinpath('./images/'), exist_ok=True)
 outputDictionary = {'Hero': {}, 'Browse_Gifts': {}, 'Popular_Categories': {}, 'Gifts_Under_20': {}, 'Gifts_Under_40': {}, 'Inspiration': {}, 'Blog': {}}
-desktopArtboard = None
+desktopArtboard, tabletArtboard, mobileArtboard = None, None, None
 ###
 for i in psd:
     if 'DESKTOP'.lower() in i.name.lower() and i.kind == "artboard" and i.visible:
         desktopArtboard = i
+    if '1200'.lower() in i.name.lower() and i.kind == "artboard" and i.visible: 
+        tabletArtboard = i
+    if 'MOBILE'.lower() in i.name.lower() and i.kind == "artboard" and i.visible:
+        mobileArtboard = i     
 ###  
 ### 
 def get_hero_images(artboard):
@@ -69,6 +73,42 @@ def get_hero_images(artboard):
                         if copy.kind =='type':
                             outputDictionary['Hero']['Headline'] = images[2].name.lower().strip()
                             outputDictionary['Hero']['Button_Text'] = images[1].name.lower().replace(' >', '').strip()
+###
+###
+def get_tablet_images(artboard):
+    tablet_image_namespace = "tablet"
+    counter = []
+    try:
+        for layer in reversed(list(artboard.descendants())):
+            if layer.kind == 'group' and "Image".lower() in layer.name.lower():
+                try: 
+                    counter.append(layer)
+                    image = layer.compose()
+                    image.convert('RGB').save(
+                    Path(psd_file_path).joinpath('images', f'{image_namespace}_{tablet_image_namespace}_0{str(len(counter))}_v1.jpg'), quality=85)
+                    print(f'exporting tablet image {str(len(counter))}...')
+                except AttributeError:
+                    pass
+    except:
+        pass
+###
+###
+def get_mobile_images(artboard):
+    mobile_image_namespace = "mobile"
+    counter = []
+    try:
+        for layer in reversed(list(artboard.descendants())):
+            if layer.kind == 'group' and "Image".lower() in layer.name.lower():
+                try:
+                    counter.append(layer)
+                    image = layer.compose()
+                    image.convert('RGB').save(
+                    Path(psd_file_path).joinpath('images', f'{image_namespace}_{mobile_image_namespace}_0{str(len(counter))}_v1.jpg'), quality=85)
+                    print(f'exporting mobile image {str(len(counter))}...')
+                except AttributeError:
+                    pass
+    except:
+        pass
 ###
 ###
 def get_gifts_data(artboard):
@@ -280,6 +320,8 @@ def get_blog_data(artboard):
 ###
 ### Run functions
 get_hero_images(desktopArtboard)
+get_tablet_images(tabletArtboard)
+get_mobile_images(mobileArtboard)
 get_gifts_data(desktopArtboard)
 get_popular_cats_images(desktopArtboard)
 get_gifts_under_twenty_data(desktopArtboard)

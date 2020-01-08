@@ -6,18 +6,6 @@
 		@include max(767) {
 			margin-top: get-vw-screen(40px, 767);
 		}
-		//Core partials
-@import "master";
-#gg-container {
-	#hero-row {
-		margin-top: 40px;
-		@include max(767) {
-			margin-top: get-vw-screen(40px, 767);
-		}
-		margin-top: 40px;
-		@include max(767) {
-			margin-top: get-vw-screen(40px, 767);
-		}
 		#hero-col {
 			position: relative;
 			max-width: 1550px;
@@ -48,7 +36,8 @@
 					@include min(1199) {
 						-ms-grid-column: 1;
 						grid-column: 1;
-						background: url("//cdn.joules.com/medias/psdggtest123-hero-01-v1.jpg?context=bWFzdGVyfGltYWdlc3w0MzAyNnxpbWFnZS9qcGVnfHN5cy1tYXN0ZXIvaW1hZ2VzL2g2OS9oZWYvOTU2Mzc3NjUxNjEyNi9wc2RnZ3Rlc3QxMjNfaGVyb18wMV92MS5qcGd8N2Q1ZjNjNjNmMDQ4ZTBiODBlMzEzODZiNjBiNjE4ZjU2MDUyYjU3NzAxM2RiMGU3Y2QxMjg2ZjJkNTY3NTc2OQ") no-repeat 50% 50%;
+						background: url("https://cdn.joules.com/medias/ggtestpy-hero-01-v1.jpg?context=bWFzdGVyfGltYWdlc3w0MzAyNnxpbWFnZS9qcGVnfHN5cy1tYXN0ZXIvaW1hZ2VzL2hjOC9oZTkvOTU2OTgyNTYxOTk5OC9nZ3Rlc3RweV9oZXJvXzAxX3YxLmpwZ3xkYjNmZWQxNzQ5ZGQ5MDJkNDk0OTZhYzNiNGJjY2VmM2JmYzdjYmZkY2U1Y2QwMzk2MDY4ZjUwYzEwMjk5OTIw")
+							no-repeat 50% 50%;
 						float: left;
 					}
 				}
@@ -57,12 +46,14 @@
 					@include min(768) {
 						-ms-grid-column: 3;
 						grid-column: 3;
-						background: url("//cdn.joules.com/medias/psdggtest123-hero-02-v1.jpg?context=bWFzdGVyfGltYWdlc3wxMjM1ODF8aW1hZ2UvanBlZ3xzeXMtbWFzdGVyL2ltYWdlcy9oMjkvaGYwLzk1NjM3NzY1ODE2NjIvcHNkZ2d0ZXN0MTIzX2hlcm9fMDJfdjEuanBnfDZjOGQwMTNkOGI1MGVhNTc2MGEyZDIxNWM3OGQxZWQ3ZWMyYjUzZDM3YzFiZWJhMDNjZmFiYWYzMWFmODgwNzQ") no-repeat 50% 50%;
+						background: url("https://cdn.joules.com/medias/ggtestpy-hero-02-v1.jpg?context=bWFzdGVyfGltYWdlc3wxMjM1ODF8aW1hZ2UvanBlZ3xzeXMtbWFzdGVyL2ltYWdlcy9oZjUvaGU1Lzk1Njk4MjU3NTEwNzAvZ2d0ZXN0cHlfaGVyb18wMl92MS5qcGd8ZDZhNGVhYjI5NjQwY2JmYTE0NDA5ZmE5Y2NlZGNiMTk1ZDNkMjhlYmE0YjA2YWViZDg4ZjEzMzg5ODJmYWJkZA")
+							no-repeat 50% 50%;
 					}
 					@include minmax(768, 1199) {
 						-ms-grid-column: 1;
 						-ms-grid-column-span: 3;
-						background: url("//cdn.joules.com[Hero_Image_Tablet_One]") no-repeat 50% 50%;
+						background: url("https://cdn.joules.com/medias/ggtestpy-tablet-01-v1.jpg?context=bWFzdGVyfGltYWdlc3wxMDgzMjB8aW1hZ2UvanBlZ3xzeXMtbWFzdGVyL2ltYWdlcy9oNTQvaDhkLzk1Njk4MjYyNDI1OTAvZ2d0ZXN0cHlfdGFibGV0XzAxX3YxLmpwZ3xiNjQxNzc2MTkxZDE5NjM3MDlhMjA1ZjFmMjg3ZGZmZjcwOTI5YTU5NWFjNWE3NDZlMDdhOTU2MDlmZGRiOGM1")
+							no-repeat 50% 50%;
 						grid-column: 1/4;
 					}
 				}
@@ -101,8 +92,5 @@
 				}
 			}
 		}
-	}
-}
-
 	}
 }

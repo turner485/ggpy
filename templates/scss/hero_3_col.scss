@@ -19,7 +19,7 @@
 		}
 	}
 	.background-A {
-		background-image: url("//cdn.joules.com[Hero_Image_One]");
+		background-image: url("https://cdn.joules.com[Hero_Image_One]");
 		background-repeat: no-repeat;
 		background-position: 50% 50%;
 		-ms-grid-row: 1;
@@ -28,7 +28,7 @@
 		grid-column: 1;
 	}
 	.background-B {
-		background-image: url("//cdn.joules.com[Hero_Image_Two]");
+		background-image: url("https://cdn.joules.com[Hero_Image_Two]");
 		background-repeat: no-repeat;
 		background-position: 30% 50%;
 		max-width: 786px;
@@ -38,7 +38,7 @@
 		grid-column: 3;
 	}
 	.background-C {
-		background-image: url("//cdn.joules.com[Hero_Image_Three]");
+		background-image: url("https://cdn.joules.com[Hero_Image_Three]");
 		background-repeat: no-repeat;
 		background-position: 50% 50%;
 		max-width: 786px;
@@ -54,32 +54,26 @@
 		left: 50%;
 		bottom: 10%;
 		@include minmax(768, 991) {
-			
 		}
 		@include max(767) {
-			
 		}
-		
+
 		h2 {
 			@include display-text($fut, 36px, 1.2, 0.08em, #fff, null, null);
 			text-shadow: 1px 1px 10px rgba(0, 0, 0, 0.8);
 			margin: 0 auto;
 			white-space: nowrap;
 			@include minmax(992, 1450) {
-			
 			}
 			@include minmax(768, 991) {
-				
 			}
 			@include max(767) {
-				
 			}
 		}
 		span {
 			@include button(#000, #fff);
 			margin: 15px auto 0;
 			@include max(767) {
-				
 			}
 		}
 	}

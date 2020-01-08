@@ -60,6 +60,7 @@ def scss_hero_full_bleed(data):
             # data replace
             file_data = file_data.replace('[Hero_Image_One]', heroImageOne)
             # build sass
+            print('HERO_FULL_BLEED')
         return file_data
     except TypeError:
         pass
@@ -77,6 +78,7 @@ def scss_hero_2_col(data):
             file_data = file_data.replace('[Hero_Image_One]', heroImageOne)
             file_data = file_data.replace('[Hero_Image_Two]', heroImageTwo)
             # build sass
+            print('HERO_2_COL')
         return file_data
     except TypeError:
         pass
@@ -90,10 +92,13 @@ def scss_hero_2_split_right(data):
             # get data
             heroImageOne = try_get_data(data, 'Hero', 'Image_One')
             heroImageTwo = try_get_data(data, 'Hero', 'Image_Two')
+            heroImageTablet = try_get_data(data, 'Hero', 'Image_Tablet')
             # data replace
             file_data = file_data.replace('[Hero_Image_One]', heroImageOne)
             file_data = file_data.replace('[Hero_Image_Two]', heroImageTwo)
+            file_data = file_data.replace('[Hero_Image_Tablet]', heroImageTablet)
             # build sass
+            print('HERO_2_SPLIT_RIGHT')
         return file_data
     except TypeError:
         pass
@@ -113,6 +118,7 @@ def scss_hero_3_col(data):
             file_data = file_data.replace('[Hero_Image_Two]', heroImageTwo)
             file_data = file_data.replace('[Hero_Image_Three]', heroImageThree)
             # build sass
+            print('HERO_3_COL')
         return file_data
     except TypeError:
         pass
@@ -143,11 +149,13 @@ def html_hero_content(data, content):
         HeroHeadline = try_get_data(data, 'Hero', 'Headline')
         heroButtonText = try_get_data(data, 'Hero', 'Button_Text')
         heroLink = try_get_data(data, 'Hero', 'Link')
+        heroMobileImage = try_get_data(data, 'Hero', 'Image_Mobile')
         # data replace
         file_data = file_data.replace('[Main_Title]', MainTitle)
         file_data = file_data.replace('[Hero_Headline]', HeroHeadline)
         file_data = file_data.replace('[Hero_Button_Text]', heroButtonText)
         file_data = file_data.replace('[Hero_Link]', heroLink)
+        file_data = file_data.replace('https://cdn.joules.com[Hero_Mobile_Image]', heroMobileImage)
     return file_data
 ###
 ###
@@ -194,6 +202,7 @@ def html_browse_gifts_content(data, block_data):
         carousel_empty_data = carousel_empty_data.replace(f'[Carousel_Block_{i}_Image_Source]', blockButtonImgSrc)
         carousel_pop_data += carousel_empty_data
     file_data = file_data.replace('[Browse_Gifts_Carousel_Row]', carousel_pop_data)
+    print(f'BROWSE GIFTS CAROUSEL COUNT: {count}')
     return file_data
 ###
 ###
@@ -216,6 +225,7 @@ def html_popular_categories_content(data):
     file_data = file_data.replace('[Popular_Categories_Right_Image_Source]', PopularCategoriesRightImgSrc)
     file_data = file_data.replace('[Popular_Categories_Right_Link]', PopularCategoriesRightLink)
     #return data
+    print('POPULAR CATEGORIES')
     return file_data
 ###
 ###
@@ -246,6 +256,7 @@ def html_gifts_under_twenty_content(data, block_data):
         carousel_pop_data += carousel_empty_data
     file_data = file_data.replace('[Gifts_Under_20_Carousel_Row]', carousel_pop_data)
     # return data
+    print(f'GIFTS UNDER £20 CAROUSEL COUNT: {count}')
     return file_data
 ###
 ###
@@ -275,6 +286,7 @@ def html_gifts_under_forty_content(data, block_data):
         carousel_empty_data = carousel_empty_data.replace(f'[Carousel_Block_{i}_Image_Source]', blockButtonImgSrc)
         carousel_pop_data += carousel_empty_data
     file_data = file_data.replace('[Gifts_Under_40_Carousel_Row]', carousel_pop_data)
+    print(f'GIFTS UNDER £40 CAROUSEL COUNT: {count}')
     # return data
     return file_data
 ###
@@ -301,6 +313,7 @@ def html_inspiration_content(data, block_data):
         carousel_empty_data = carousel_empty_data.replace(f'[Carousel_Block_{i}_Image_Source]', blockButtonImgSrc)
         carousel_pop_data += carousel_empty_data
     file_data = file_data.replace('[Inspiration_Carousel_Row]', carousel_pop_data)
+    print(f'INSPORATION CAROUSEL COUNT: {count}')
     return file_data
 ###
 ###
@@ -326,6 +339,7 @@ def html_blog_content(data, blog_block_data):
         carousel_empty_data = carousel_empty_data.replace(f'[Carousel_Block_{i}_Image_Source]', blockButtonImgSrc)
         carousel_pop_data += carousel_empty_data
     file_data = file_data.replace('[Blog_Carousel_Row]', carousel_pop_data)
+    print(f'BLOG CAROUSEL COUNT: {count}')
     return file_data
 ###
 ### Run functions 
@@ -335,17 +349,14 @@ def main():
         sass_file = sass_file.replace('[Hero]', output_sass)
         with open(scss_production, 'w') as scss_file_prod:
             scss_file_prod.write(sass_file)   
-
     concat_data = hero_html + html_browse_gifts_carousel + html_popular_categories + html_gifts_under_twenty_carousel + html_gifts_under_forty_carousel + html_inspiration_carousel + html_blog_carousel
     with open(html_production, 'w') as html_file:
         html_file.write(concat_data)
-        
 ### function vars ###
 data = get_json_data()
 block_data = get_blocks()
 blog_block_data = get_blog_blocks()
 output_sass = select_scss_hero(data)
-
 ### function data string vars ###
 hero_html = select_html_hero(data)
 html_browse_gifts_carousel = html_browse_gifts_content(data, block_data)
@@ -354,8 +365,7 @@ html_gifts_under_twenty_carousel = html_gifts_under_twenty_content(data, block_d
 html_gifts_under_forty_carousel = html_gifts_under_forty_content(data, block_data)
 html_inspiration_carousel = html_inspiration_content(data, block_data)
 html_blog_carousel = html_blog_content(data, blog_block_data)
-
 ###
-print('building page...')
+print('BUILDING GIFT GUIDE...')
 if __name__ == "__main__":
     main()
