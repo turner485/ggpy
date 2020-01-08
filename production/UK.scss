@@ -1,6 +1,6 @@
 //Core partials
 @import "master";
-#gift-guide-container {
+#gg-container {
 	#hero-row {
 		margin-top: 40px;
 		@include max(767) {
@@ -80,7 +80,7 @@
 				font-size: get-vw-screen(56px, 767);
 			}
 		}
-		button {
+		span.cta {
 			@include button(#b23459, #fff);
 			margin: 15px auto 0;
 			@include max(767) {
