@@ -30,7 +30,7 @@ if not psd_name:
             break
 if not path_of_psd:
     path_of_psd = Path(psd_file_path).joinpath(psd_file_path)
-print('*CAUTION* please use hyphens instead of underscores\nexample == 201907_05_AW19_C1_R1_Homepage_UK \n')
+print('example == 2020_20_01_SS20_C1_GG \n')
 image_namespace = input('naming convention:')
 ###
 ###

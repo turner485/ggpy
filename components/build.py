@@ -352,12 +352,12 @@ def main():
     concat_data = hero_html + html_browse_gifts_carousel + html_popular_categories + html_gifts_under_twenty_carousel + html_gifts_under_forty_carousel + html_inspiration_carousel + html_blog_carousel
     with open(html_production, 'w') as html_file:
         html_file.write(concat_data)
-### function vars ###
+### data function vars ###
 data = get_json_data()
 block_data = get_blocks()
 blog_block_data = get_blog_blocks()
 output_sass = select_scss_hero(data)
-### function data string vars ###
+### function string vars ###
 hero_html = select_html_hero(data)
 html_browse_gifts_carousel = html_browse_gifts_content(data, block_data)
 html_popular_categories = html_popular_categories_content(data)
